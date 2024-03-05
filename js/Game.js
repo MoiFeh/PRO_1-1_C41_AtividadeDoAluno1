@@ -8,6 +8,7 @@ class Game {
     this.leader1 = createElement("h2");
     this.leader2 = createElement("h2");
     //crie a propriedade aqui
+    this.playerMoving = false;
   }
 
   getState() {
@@ -205,6 +206,14 @@ class Game {
 
   showFuelBar() {
     // crie a função aqui
+    push();
+    image(fuelImage, width / 2 - 130, height - player.positionY - 350,20,20);
+    fill("white");
+    rect(width / 2 - 100, height - player.postionY - 350, 185, 20);
+    fll("#ffc400");
+    rect(width / 2 - 100, height - player.postionY - 350, player.fuel, 20);
+    noStroke();
+    pop();
   }
 
   showLeaderboard() {
@@ -253,6 +262,8 @@ class Game {
   handlePlayerControls() {
     if (keyIsDown(UP_ARROW)) {
       // atualize os valores aqui
+      this.playerMoving = true;
+      player.postionY += 10;
       player.update();
     }
 
@@ -277,10 +288,13 @@ class Game {
     });
 
     // reduzindo o combustível do carro
-
-    
-    
-    
+    if(player.fuel > 0 && this.playerMoving) {
+      player.fuel -= 0.3;
+    }
+    if(player.fuel <= 0){
+      gameState = 2;
+      this.gameOver();
+    }
   }
 
   handlePowerCoins(index) {
